@@ -1,0 +1,23 @@
+{
+  "name": "owi-control",
+  "version": "0.0.0",
+  "description": "owi-control ===========",
+  "main": "index.js",
+  "dependencies": {
+    "owi-robot-arm": "0.0.1"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bigbang/owi-control"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/bigbang/owi-control/issues"
+  },
+  "homepage": "https://github.com/bigbang/owi-control"
+}
