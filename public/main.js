@@ -11,19 +11,21 @@ function preload() {
 
 var channel;
 
-var OFFSET = 80;
+var OFFSET = 120;
 
 function create() {
 
     game.stage.backgroundColor = '#736357';
     game.add.text(0, 0, 'OWI Robot Control!', {});
 
+
+    game.add.text(510,200, 'Base/Shoulder', {});
     // CLOCKWISE
     var keyClockwise = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
     keyClockwise.onDown.add(onClockwise, this);
     keyClockwise.onUp.add(onStop, this);
 
-    var buttonClockwise = game.add.button(game.world.centerX, game.world.centerY, 'left-dark', null, this);
+    var buttonClockwise = game.add.button(500, game.world.centerY, 'left-dark', null, this);
     buttonClockwise.onInputUp.add(onStop, this);
     buttonClockwise.onInputDown.add(onClockwise, this);
 
@@ -32,7 +34,7 @@ function create() {
     keyCCW.onDown.add(onCounterClockwise, this);
     keyCCW.onUp.add(onStop, this);
 
-    var buttonCCW = game.add.button(game.world.centerX + OFFSET, game.world.centerY, 'right-dark', null, this);
+    var buttonCCW = game.add.button(500 + OFFSET, game.world.centerY, 'right-dark', null, this);
     buttonCCW.onInputUp.add(onStop, this);
     buttonCCW.onInputDown.add(onCounterClockwise, this);
 
@@ -41,7 +43,7 @@ function create() {
     keyShoulderUp.onDown.add(onShoulderUp, this);
     keyShoulderUp.onUp.add(onStop, this);
 
-    var buttonShoulderUp = game.add.button(game.world.centerX + (OFFSET / 2), game.world.centerY - 60, 'up-dark', null, this);
+    var buttonShoulderUp = game.add.button(500 + (OFFSET / 2), game.world.centerY - 60, 'up-dark', null, this);
     buttonShoulderUp.onInputUp.add(onStop, this);
     buttonShoulderUp.onInputDown.add(onShoulderUp, this);
 
@@ -50,16 +52,18 @@ function create() {
     keyShoulderDown.onDown.add(onShoulderDown, this);
     keyShoulderDown.onUp.add(onStop, this);
 
-    var buttonShoulderDown = game.add.button(game.world.centerX + ( OFFSET / 2 ), game.world.centerY + 60, 'down-dark', null, this);
+    var buttonShoulderDown = game.add.button(500 + ( OFFSET / 2 ), game.world.centerY + 60, 'down-dark', null, this);
     buttonShoulderDown.onInputUp.add(onStop, this);
     buttonShoulderDown.onInputDown.add(onShoulderDown, this);
 
+
+    game.add.text(350,200, 'Elbow', {});
     //Elbow UP
     var keyElbowUp = game.input.keyboard.addKey(Phaser.Keyboard.E);
     keyElbowUp.onDown.add(onElbowUp, this);
     keyElbowUp.onUp.add(onStop, this);
 
-    var buttonElbowUp = game.add.button(game.world.centerX - 150, game.world.centerY, 'up-dark', null, this);
+    var buttonElbowUp = game.add.button(350, game.world.centerY - 50, 'up-dark', null, this);
     buttonElbowUp.onInputUp.add(onStop, this);
     buttonElbowUp.onInputDown.add(onElbowUp, this);
 
@@ -68,17 +72,17 @@ function create() {
     keyElbowDown.onDown.add(onElbowDown, this);
     keyElbowDown.onUp.add(onStop, this);
 
-    var buttonElbowDown = game.add.button(game.world.centerX - 150, game.world.centerY + 75, 'down-dark', null, this);
+    var buttonElbowDown = game.add.button(350, game.world.centerY + 50, 'down-dark', null, this);
     buttonElbowDown.onInputUp.add(onStop, this);
     buttonElbowDown.onInputDown.add(onElbowDown, this);
 
-
+    game.add.text(250,200, 'Wrist', {});
     //Wrist UP
     var keyWristUp = game.input.keyboard.addKey(Phaser.Keyboard.W);
     keyWristUp.onDown.add(onWristUp, this);
     keyWristUp.onUp.add(onStop, this);
 
-    var buttonWristUp = game.add.button(game.world.centerX - 250, game.world.centerY, 'up-dark', null, this);
+    var buttonWristUp = game.add.button(250, game.world.centerY - 50, 'up-dark', null, this);
     buttonWristUp.onInputUp.add(onStop, this);
     buttonWristUp.onInputDown.add(onWristUp, this);
 
@@ -87,17 +91,17 @@ function create() {
     keyWristDown.onDown.add(onWristDown, this);
     keyWristDown.onUp.add(onStop, this);
 
-    var buttonWristDown = game.add.button(game.world.centerX - 250, game.world.centerY + 75, 'down-dark', null, this);
+    var buttonWristDown = game.add.button(250, game.world.centerY + 50, 'down-dark', null, this);
     buttonWristDown.onInputUp.add(onStop, this);
     buttonWristDown.onInputDown.add(onWristDown, this);
 
-
+    game.add.text(100,200, 'Grips', {});
     //Grips OPEN
     var keyGripsOpen = game.input.keyboard.addKey(Phaser.Keyboard.Q);
     keyGripsOpen.onDown.add(onGripsOpen, this);
     keyGripsOpen.onUp.add(onStop, this);
 
-    var buttonGripsOpen = game.add.button(game.world.centerX - 400, game.world.centerY, 'left-dark', null, this);
+    var buttonGripsOpen = game.add.button(50, game.world.centerY, 'left-dark', null, this);
     buttonGripsOpen.onInputUp.add(onStop, this);
     buttonGripsOpen.onInputDown.add(onGripsOpen, this);
 
@@ -106,7 +110,7 @@ function create() {
     keyGripsClosed.onDown.add(onGripsClosed, this);
     keyGripsClosed.onUp.add(onStop, this);
 
-    var buttonGripsClosed = game.add.button(game.world.centerX - 325, game.world.centerY, 'left-dark', null, this);
+    var buttonGripsClosed = game.add.button(150, game.world.centerY, 'right-dark', null, this);
     buttonGripsClosed.onInputUp.add(onStop, this);
     buttonGripsClosed.onInputDown.add(onGripsClosed, this);
 
