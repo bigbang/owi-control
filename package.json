@@ -4,7 +4,8 @@
   "description": "owi-control ===========",
   "main": "index.js",
   "dependencies": {
-    "owi-robot-arm": "0.0.1"
+    "owi-robot-arm": "0.0.1",
+    "bigbang.io": "0.0.2"
   },
   "devDependencies": {},
   "scripts": {

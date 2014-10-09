@@ -4,21 +4,25 @@ var RobotArm = require('owi-robot-arm');
 var bigbang = require('bigbang.io');
 var client = new bigbang.Client();
 
-client.connectAnonymous("thegigabots.app.bigbang.io", function (result) {
+client.connect("http://thegigabots.app.bigbang.io", function (err) {
 
-    if (result.success) {
-        console.log("Connected!");
+    if (err) {
+        console.log("connection failed " + err);
+        return;
     }
 
-    client.subscribe('owi-arm', function (err, channel) {
-        if (err) {
-            console.err("Unable to subscribe!")
-        }
-        else {
-            startTheArm(channel)
-        }
-
-    });
+    else {
+        console.log("Robot connected.")
+        client.subscribe('owi-arm', function (err, channel) {
+            if (err) {
+                console.error("Unable to subscribe!")
+            }
+            else {
+                console.log("Subscribed to owi-arm.");
+                startTheArm(channel)
+            }
+        });
+    }
 });
 
 function startTheArm(channel) {
@@ -34,7 +38,7 @@ function startTheArm(channel) {
         }
     }, 10000);
 
-    channel.onMessage(function (m) {
+    channel.on('message', function (m) {
 
         var msg = m.payload.getBytesAsJSON();
         lastMessage = new Date();

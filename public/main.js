@@ -2,45 +2,133 @@ var game = new Phaser.Game(800, 600, Phaser.AUTO, 'content', { preload: preload,
 
 //http://opengameart.org/content/onscreen-controls-8-styles
 function preload() {
-    game.load.image('phaser', 'img/logo.png');
     game.load.image('logo', 'img/logo.png');
-    game.load.image('pineapple', 'img/arrow-up.png');
     game.load.image('up-dark', 'img/upDark.png');
     game.load.image('left-dark', 'img/leftDark.png');
+    game.load.image('right-dark', 'img/rightDark.png');
+    game.load.image('down-dark', 'img/downDark.png');
 }
 
-var key1;
-var key2;
-var key3;
-var buttonClockwise;
+var channel;
+
+var OFFSET = 80;
 
 function create() {
 
     game.stage.backgroundColor = '#736357';
-
     game.add.text(0, 0, 'OWI Robot Control!', {});
 
-    //  Here we create 3 hotkeys, keys 1-3 and bind them all to their own functions
+    // CLOCKWISE
+    var keyClockwise = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
+    keyClockwise.onDown.add(onClockwise, this);
+    keyClockwise.onUp.add(onStop, this);
 
-    key1 = game.input.keyboard.addKey(Phaser.Keyboard.ONE);
-    key1.onDown.add(addPhaserDude, this);
-
-    key2 = game.input.keyboard.addKey(Phaser.Keyboard.TWO);
-    key2.onDown.add(addPhaserLogo, this);
-
-    key3 = game.input.keyboard.addKey(Phaser.Keyboard.THREE);
-    key3.onDown.add(addPineapple, this);
-
-    keyLeftArrow = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
-    keyLeftArrow.onDown.add(onClockwise, this);
-    keyLeftArrow.onUp.add(onStop, this);
-
-
-    buttonClockwise = game.add.button(game.world.centerX, game.world.centerY, 'left-dark', null, this);
+    var buttonClockwise = game.add.button(game.world.centerX, game.world.centerY, 'left-dark', null, this);
     buttonClockwise.onInputUp.add(onStop, this);
     buttonClockwise.onInputDown.add(onClockwise, this);
 
+    //COUNTERCLOCKWISE
+    var keyCCW = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
+    keyCCW.onDown.add(onCounterClockwise, this);
+    keyCCW.onUp.add(onStop, this);
 
+    var buttonCCW = game.add.button(game.world.centerX + OFFSET, game.world.centerY, 'right-dark', null, this);
+    buttonCCW.onInputUp.add(onStop, this);
+    buttonCCW.onInputDown.add(onCounterClockwise, this);
+
+    //SHOULDER UP
+    var keyShoulderUp = game.input.keyboard.addKey(Phaser.Keyboard.UP);
+    keyShoulderUp.onDown.add(onShoulderUp, this);
+    keyShoulderUp.onUp.add(onStop, this);
+
+    var buttonShoulderUp = game.add.button(game.world.centerX + (OFFSET / 2), game.world.centerY - 60, 'up-dark', null, this);
+    buttonShoulderUp.onInputUp.add(onStop, this);
+    buttonShoulderUp.onInputDown.add(onShoulderUp, this);
+
+    //Shoulder DOWN
+    var keyShoulderDown = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
+    keyShoulderDown.onDown.add(onShoulderDown, this);
+    keyShoulderDown.onUp.add(onStop, this);
+
+    var buttonShoulderDown = game.add.button(game.world.centerX + ( OFFSET / 2 ), game.world.centerY + 60, 'down-dark', null, this);
+    buttonShoulderDown.onInputUp.add(onStop, this);
+    buttonShoulderDown.onInputDown.add(onShoulderDown, this);
+
+    //Elbow UP
+    var keyElbowUp = game.input.keyboard.addKey(Phaser.Keyboard.E);
+    keyElbowUp.onDown.add(onElbowUp, this);
+    keyElbowUp.onUp.add(onStop, this);
+
+    var buttonElbowUp = game.add.button(game.world.centerX - 150, game.world.centerY, 'up-dark', null, this);
+    buttonElbowUp.onInputUp.add(onStop, this);
+    buttonElbowUp.onInputDown.add(onElbowUp, this);
+
+    //Elbow DOWN
+    var keyElbowDown = game.input.keyboard.addKey(Phaser.Keyboard.D);
+    keyElbowDown.onDown.add(onElbowDown, this);
+    keyElbowDown.onUp.add(onStop, this);
+
+    var buttonElbowDown = game.add.button(game.world.centerX - 150, game.world.centerY + 75, 'down-dark', null, this);
+    buttonElbowDown.onInputUp.add(onStop, this);
+    buttonElbowDown.onInputDown.add(onElbowDown, this);
+
+
+    //Wrist UP
+    var keyWristUp = game.input.keyboard.addKey(Phaser.Keyboard.W);
+    keyWristUp.onDown.add(onWristUp, this);
+    keyWristUp.onUp.add(onStop, this);
+
+    var buttonWristUp = game.add.button(game.world.centerX - 250, game.world.centerY, 'up-dark', null, this);
+    buttonWristUp.onInputUp.add(onStop, this);
+    buttonWristUp.onInputDown.add(onWristUp, this);
+
+    //Wrist DOWN
+    var keyWristDown = game.input.keyboard.addKey(Phaser.Keyboard.S);
+    keyWristDown.onDown.add(onWristDown, this);
+    keyWristDown.onUp.add(onStop, this);
+
+    var buttonWristDown = game.add.button(game.world.centerX - 250, game.world.centerY + 75, 'down-dark', null, this);
+    buttonWristDown.onInputUp.add(onStop, this);
+    buttonWristDown.onInputDown.add(onWristDown, this);
+
+
+    //Grips OPEN
+    var keyGripsOpen = game.input.keyboard.addKey(Phaser.Keyboard.Q);
+    keyGripsOpen.onDown.add(onGripsOpen, this);
+    keyGripsOpen.onUp.add(onStop, this);
+
+    var buttonGripsOpen = game.add.button(game.world.centerX - 400, game.world.centerY, 'left-dark', null, this);
+    buttonGripsOpen.onInputUp.add(onStop, this);
+    buttonGripsOpen.onInputDown.add(onGripsOpen, this);
+
+    //GRIPS CLOSED
+    var keyGripsClosed = game.input.keyboard.addKey(Phaser.Keyboard.A);
+    keyGripsClosed.onDown.add(onGripsClosed, this);
+    keyGripsClosed.onUp.add(onStop, this);
+
+    var buttonGripsClosed = game.add.button(game.world.centerX - 325, game.world.centerY, 'left-dark', null, this);
+    buttonGripsClosed.onInputUp.add(onStop, this);
+    buttonGripsClosed.onInputDown.add(onGripsClosed, this);
+
+
+    var client = new BigBang.Client();
+    client.connect("http://thegigabots.app.bigbang.io", function (err) {
+        if (err) {
+            console.error(err);
+            return;
+        }
+        else {
+            client.subscribe('owi-arm', function (err, c) {
+                if (err) {
+                    console.error("Unable to subscribe!")
+                }
+                else {
+                    console.log("Subscribed to owi-arm.");
+                    channel = c;
+                }
+            });
+        }
+    });
 }
 
 function addPhaserDude() {
@@ -56,15 +144,54 @@ function addPineapple() {
 }
 
 function onClockwise() {
-    console.log("left!");
+    sendCommand('baseCW');
+}
+
+function onCounterClockwise() {
+    sendCommand('baseCCW');
+}
+
+function onShoulderUp() {
+    sendCommand('shoulderUp');
+}
+
+function onShoulderDown() {
+    sendCommand('shoulderDown');
+}
+
+function onElbowUp() {
+    sendCommand('elbowUp');
+}
+
+function onElbowDown() {
+    sendCommand('elbowDown');
+}
+
+function onWristUp() {
+    sendCommand('wristUp');
+}
+
+function onWristDown() {
+    sendCommand('wristDown');
+}
+
+function onGripsOpen() {
+    sendCommand('gripsOpen');
+}
+
+function onGripsClosed() {
+    sendCommand('gripsClose');
 }
 
 function onStop() {
-    console.log("stop!");
+    sendCommand('stop');
 }
 
-
-function onmoof() {
-    console.log('moof');
+function sendCommand(command) {
+    if (channel) {
+        channel.publish({cmd: command});
+        console.log("published: " + command);
+    }
 }
+
 
