@@ -197,5 +197,3 @@ function sendCommand(command) {
         console.log("published: " + command);
     }
 }
-
-
