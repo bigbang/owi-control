@@ -1,0 +1,22 @@
+{
+  "name": "owi-control",
+  "version": "0.0.0",
+  "homepage": "https://github.com/bigbang/owi-control",
+  "authors": [
+    "tigeba <tigeba@altereality.com>"
+  ],
+  "description": "Web UI for OWI Robot",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bigbang.io": "~0.0.3",
+    "phaser": "~2.1.2"
+  }
+}

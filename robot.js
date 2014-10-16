@@ -11,24 +11,31 @@ client.connect("http://thegigabots.app.bigbang.io", function (err) {
         return;
     }
 
-    else {
-        console.log("Robot connected.")
-        client.subscribe('owi-arm', function (err, channel) {
-            if (err) {
-                console.error("Unable to subscribe!")
-            }
-            else {
-                console.log("Subscribed to owi-arm.");
-                startTheArm(channel)
-            }
-        });
-    }
+    console.log("Robot connected.")
+    client.subscribe('owi-arm', function (err, channel) {
+        if (err) {
+            console.error("Unable to subscribe!")
+        }
+        else {
+            console.log("Subscribed to owi-arm.");
+            startTheArm(channel)
+        }
+    });
+
 });
 
 function startTheArm(channel) {
 
     var arm = new RobotArm();
     var lastMessage = new Date();
+
+    channel.on('join', function (joined) {
+        console.log("Client %s joined", joined);
+    });
+
+    channel.on('leave', function (leave) {
+        console.log("Client %s left the building.", leave);
+    })
 
     setInterval(function () {
         var elapsed = new Date() - lastMessage;
