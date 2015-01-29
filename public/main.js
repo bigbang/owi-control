@@ -143,7 +143,7 @@ BasicGame.Game.prototype = {
         );
 
         var client = new BigBang.Client();
-        client.connect("http://thegigabots.app.bigbang.io", function (err) {
+        client.connect("http://thegigabots.bigbang.io", function (err) {
             if (err) {
                 console.error(err);
                 return;

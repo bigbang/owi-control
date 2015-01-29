@@ -4,6 +4,17 @@
     <title>Dashboard Starter UI, by Keen IO</title>
     <link rel="stylesheet" href="assets/lib/bootstrap/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="assets/css/keen-dashboards.css">
+
+    <style type="text/css">
+        #videoCanvas {
+            /* Always stretch the canvas to 640x480, regardless of its
+            internal size. */
+            width: 640px;
+            height: 480px;
+        }
+    </style>
+
+
 </head>
 <body class="application">
 
@@ -65,21 +76,43 @@
         </div>
     </div>
 
-
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-6">
             <div class="chart-wrapper">
                 <div class="chart-title">
                     Events by type
                 </div>
                 <div class="chart-stage">
-                    <canvas id="myChart" width="1200" height="400"></canvas>
+                    <canvas id="myChart" width="500" height="400"></canvas>
                     <div id="pieLegend"></div>
                 </div>
                 <div class="chart-notes">
                     Breakdown of all robot events, excluding stops.
                 </div>
             </div>
+        </div>
+
+        <div class="col-sm-6">
+            <div class="chart-wrapper">
+                <div class="chart-title">
+                    Gigabots Live Video!
+                </div>
+                <div class="chart-stage">
+                    <canvas id="videoCanvas" width="640" height="480">
+                    </canvas>
+                </div>
+                <div class="chart-notes">
+                    Collaboration with Mozilla Gigabit Community Fund!
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div class="row">
+        <div class="col-sm-12">
+
         </div>
     </div>
     <hr>
@@ -97,6 +130,7 @@
 <script src="assets/js/meta.js"></script>
 <script src="js/bigbang.io/web/bigbang.io.min.js"></script>
 <script src="Chart.min.js"></script>
+<script src="jsmpg.js"></script>
 <script src="dash.js"></script>
 </body>
 </html>

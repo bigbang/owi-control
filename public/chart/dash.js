@@ -45,7 +45,7 @@ var ctx = document.getElementById("myChart").getContext("2d");
 
 var eventTypeChart = new Chart(ctx).Bar(eventData);
 
-client.connect("http://thegigabots.app.bigbang.io", function (err) {
+client.connect("http://thegigabots.bigbang.io", function (err) {
     if (err) {
         console.error(err);
         return;
@@ -60,6 +60,7 @@ client.connect("http://thegigabots.app.bigbang.io", function (err) {
                 this.channel = c;
 
                 go();
+                playVideo();
 
             }
         });
@@ -141,6 +142,20 @@ function go() {
 
     });
 }
+
+function playVideo() {
+    // Show loading notice
+    var canvas = document.getElementById('videoCanvas');
+    var ctx = canvas.getContext('2d');
+    ctx.fillStyle = '#444';
+    ctx.fillText('Loading...', canvas.width/2-30, canvas.height/3);
+
+    // Setup the WebSocket connection and start the player
+    var client = new WebSocket( 'ws://localhost:8084/' );
+    console.log('doing the dew!');
+    var player = new jsmpeg(client, {canvas:canvas});
+}
+
 
 function buildEventData() {
 

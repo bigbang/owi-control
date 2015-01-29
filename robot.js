@@ -4,7 +4,7 @@ var RobotArm = require('owi-robot-arm');
 var bigbang = require('bigbang.io');
 var client = new bigbang.Client();
 
-client.connect("http://thegigabots.app.bigbang.io", function (err) {
+client.connect("http://thegigabots.bigbang.io", function (err) {
 
     if (err) {
         console.log("connection failed " + err);
@@ -41,7 +41,6 @@ function startTheArm(channel) {
         var elapsed = new Date() - lastMessage;
 
         if (elapsed > 10000) {
-            console.log("Arm motion killed via timeout");
             arm.stop();
         }
     }, 10000);
