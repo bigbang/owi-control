@@ -91,8 +91,8 @@ BasicGame.Game.prototype = {
             left: {
                 type: 'dpad',
                 position: {
-                    left: '15%',
-                    bottom: '30%'
+                    left: '24%',
+                    bottom: '20%'
                 },
 
                 dpad: {
@@ -105,8 +105,8 @@ BasicGame.Game.prototype = {
             right: {
                 type: 'dpad',
                 position: {
-                    left: '40%',
-                    bottom: '30%'
+                    left: '24%',
+                    bottom: '55%'
                 },
 
                 dpad: {
@@ -126,8 +126,8 @@ BasicGame.Game.prototype = {
                 left: false,
                 right: {
                     position: {
-                        left: '22%',
-                        bottom: '60%'
+                        left: '19%',
+                        bottom: '85%'
                     },
                     type: 'buttons',
                     buttons: [
