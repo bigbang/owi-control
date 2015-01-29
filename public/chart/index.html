@@ -36,18 +36,16 @@
 
 <div class="container-fluid">
     <div class="row">
-
         <div class="col-sm-6">
             <div class="chart-wrapper">
                 <div class="chart-title">
-                    Pageviews by browser (past 24 hours)
+                    Total Control Events
                 </div>
                 <div class="chart-stage">
                     <div id="chicken"></div>
-
                 </div>
                 <div class="chart-notes">
-                    This is a sample text region to describe this chart.
+                    The total number of control events for the connected robot.
                 </div>
             </div>
         </div>
@@ -55,44 +53,36 @@
         <div class="col-sm-6">
             <div class="chart-wrapper">
                 <div class="chart-title">
-                    Pageviews by browser (past 5 days)
+                    Connected users
                 </div>
                 <div class="chart-stage">
                     <div id="users"></div>
                 </div>
                 <div class="chart-notes">
-                    Notes go down here
+                    All users currently subscribed to robot event data.
                 </div>
             </div>
         </div>
-
     </div>
 
 
     <div class="row">
-
         <div class="col-sm-12">
             <div class="chart-wrapper">
                 <div class="chart-title">
-                    Impressions by advertiser
+                    Events by type
                 </div>
                 <div class="chart-stage">
-                    <div id="types-events">
-                        <canvas id="myChart" width="400" height="400"></canvas>
-                    </div>
+                    <canvas id="myChart" width="1200" height="400"></canvas>
+                    <div id="pieLegend"></div>
                 </div>
                 <div class="chart-notes">
-                    Notes go down here
+                    Breakdown of all robot events, excluding stops.
                 </div>
             </div>
         </div>
-
     </div>
-
     <hr>
-
-    <p class="small text-muted">Built with &#9829; by <a href="https://keen.io">Keen IO</a></p>
-
 </div>
 
 <script src="assets/lib/jquery/dist/jquery.min.js"></script>

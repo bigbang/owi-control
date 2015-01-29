@@ -41,6 +41,7 @@ function startTheArm(channel) {
         var elapsed = new Date() - lastMessage;
 
         if (elapsed > 10000) {
+            console.log("Arm motion killed via timeout");
             arm.stop();
         }
     }, 10000);

@@ -2,13 +2,26 @@ var client = new BigBang.Client();
 var channel;
 var totalEventCount = 0;
 
+
+var eventOpens = 0;
+var eventCloses = 0;
+var eventShoulderUp = 0;
+var eventShoulderDown = 0;
+var eventBaseCW = 0;
+var eventBaseCCW = 0;
+var eventElbowUp = 0;
+var eventElbowDown = 0;
+var eventWristUp = 0;
+var eventWristDown = 0;
+
+
 var userChart = new Keen.Dataviz()
     .el(document.getElementById('users'))
     .parseRawData({ result: totalEventCount })
     .chartType("metric")
     .colors(["#6ab975"])
     .title("Connected Users")
-    .height(350)
+    .height(400)
     .render();
 
 
@@ -18,65 +31,19 @@ var totalEvents = new Keen.Dataviz()
     .chartType("metric")
     .colors(["#6ab975"])
     .title("Robot Control Events")
-    .height(350)
+    .height(400)
     .render();
 
 
-var eventData = [
-    {
-        value: 300,
-        color:"#F7464A",
-        highlight: "#FF5A5E",
-        label: "Red"
-    },
-    {
-        value: 50,
-        color: "#46BFBD",
-        highlight: "#5AD3D1",
-        label: "Green"
-    },
-    {
-        value: 100,
-        color: "#FDB45C",
-        highlight: "#FFC870",
-        label: "Yellow"
-    }
-];
+var eventData;
 
 
-var options = {
-    //Boolean - Whether we should show a stroke on each segment
-    segmentShowStroke : true,
+buildEventData();
 
-        //String - The colour of each segment stroke
-        segmentStrokeColor : "#fff",
-
-    //Number - The width of each segment stroke
-    segmentStrokeWidth : 2,
-
-    //Number - The percentage of the chart that we cut out of the middle
-    percentageInnerCutout : 50, // This is 0 for Pie charts
-
-    //Number - Amount of animation steps
-    animationSteps : 100,
-
-    //String - Animation easing effect
-    animationEasing : "easeOutBounce",
-
-    //Boolean - Whether we animate the rotation of the Doughnut
-    animateRotate : true,
-
-    //Boolean - Whether we animate scaling the Doughnut from the centre
-    animateScale : false,
-
-    //String - A legend template
-    legendTemplate : "<ul class=\"<%=name.toLowerCase()%>-legend\"><% for (var i=0; i<segments.length; i++){%><li><span style=\"background-color:<%=segments[i].fillColor%>\"></span><%if(segments[i].label){%><%=segments[i].label%><%}%></li><%}%></ul>"
-
-}
 
 var ctx = document.getElementById("myChart").getContext("2d");
-var eventTypeChart = new Chart(ctx).Pie(data,options);
 
+var eventTypeChart = new Chart(ctx).Bar(eventData);
 
 client.connect("http://thegigabots.app.bigbang.io", function (err) {
     if (err) {
@@ -119,9 +86,80 @@ function go() {
         totalEvents.render();
 
         var json = msg.payload.getBytesAsJSON();
-        console.log(json);
+
+        if (json.cmd === 'gripsOpen') {
+            eventOpens++;
+            eventTypeChart.datasets[0].bars[0].value = eventOpens;
+            eventTypeChart.update();
+        }
+        else if (json.cmd === 'gripsClose') {
+            eventCloses++;
+            eventTypeChart.datasets[0].bars[1].value = eventCloses;
+            eventTypeChart.update();
+        }
+        else if (json.cmd === 'shoulderUp') {
+            eventShoulderUp++;
+            eventTypeChart.datasets[0].bars[2].value = eventShoulderUp;
+            eventTypeChart.update();
+        }
+        else if (json.cmd === 'shoulderDown') {
+            eventShoulderDown++;
+            eventTypeChart.datasets[0].bars[3].value = eventShoulderDown;
+            eventTypeChart.update();
+        }
+        else if (json.cmd === 'baseCW') {
+            eventBaseCW++;
+            eventTypeChart.datasets[0].bars[4].value = eventBaseCW;
+            eventTypeChart.update();
+        }
+        else if (json.cmd === 'baseCCW') {
+            eventBaseCCW++;
+            eventTypeChart.datasets[0].bars[5].value = eventBaseCCW;
+            eventTypeChart.update();
+        }
+        else if (json.cmd === 'elbowUp') {
+            eventElbowUp++;
+            eventTypeChart.datasets[0].bars[6].value = eventElbowUp;
+            eventTypeChart.update();
+        }
+        else if (json.cmd === 'elbowDown') {
+            eventElbowDown++;
+            eventTypeChart.datasets[0].bars[7].value = eventElbowDown;
+            eventTypeChart.update();
+        }
+        else if (json.cmd === 'wristUp') {
+            eventWristUp++;
+            eventTypeChart.datasets[0].bars[8].value = eventWristUp;
+            eventTypeChart.update();
+        }
+        else if (json.cmd === 'wristDown') {
+            eventWristDown++;
+            eventTypeChart.datasets[0].bars[9].value = eventWristDown;
+            eventTypeChart.update();
+        }
+
 
     });
 }
+
+function buildEventData() {
+
+    eventData = {
+        labels: ["Opens", "Closes", "ShoulderUp", "Shoulder Down", "Base Right", "Base Left", "Elbow Up", "Elbow Down", "Wrist Up", "Wrist Down"],
+        datasets: [
+            {
+                label: "My First dataset",
+                fillColor: "rgba(220,220,220,0.5)",
+                strokeColor: "rgba(220,220,220,0.8)",
+                highlightFill: "rgba(220,220,220,0.75)",
+                highlightStroke: "rgba(220,220,220,1)",
+                data: [eventOpens, eventCloses, eventShoulderUp, eventShoulderDown, eventBaseCW, eventBaseCCW, eventElbowUp, eventElbowDown, eventWristUp, eventWristDown]
+            }
+        ]
+    };
+
+
+}
+
 
 
