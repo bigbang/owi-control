@@ -1,0 +1,36 @@
+{
+  "name": "bigbang.io",
+  "version": "0.0.5",
+  "main": "lib/NodeBigBangClient.js",
+  "description": "Create realtime applications in seconds with Big Bang.",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bigbang/bigbang-client-js"
+  },
+  "private": false,
+  "dependencies": {
+    "faye-websocket": "0.8.1"
+  },
+  "keywords": [
+    "bigbang",
+    "realtime",
+    "real-time",
+    "websocket",
+    "big bang",
+    "iot"
+  ],
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-browserify": "^3.0.1",
+    "grunt-contrib-clean": "^0.6.0",
+    "grunt-contrib-uglify": "^0.6.0",
+    "grunt-exec": "^0.4.6",
+    "grunt-jsdoc": "^0.5.7",
+    "grunt-typescript": "^0.3.8",
+    "mocha": "~1.21.5",
+    "chai": "~1.9.2"
+  },
+  "scripts": {
+    "prepublish": "grunt"
+  }
+}

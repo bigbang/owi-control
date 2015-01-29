@@ -1,0 +1,33 @@
+{
+  "name": "bigbang.io",
+  "version": "0.0.5",
+  "homepage": "https://github.com/bigbang/bigbang-client-js",
+  "authors": [
+    "Jason von Nieda <jason@vonnieda.org>"
+  ],
+  "description": "A BigBang.io client library",
+  "main": "web/bigbang.js",
+  "moduleType": [
+    "amd",
+    "node"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests",
+    "lib"
+  ],
+  "private": false,
+  "_release": "0.0.5",
+  "_resolution": {
+    "type": "version",
+    "tag": "v0.0.5",
+    "commit": "532ec121922af137c1f1803040eb3d3e695cd8a8"
+  },
+  "_source": "git://github.com/bigbang/bigbang-client-js.git",
+  "_target": "0.0.5",
+  "_originalSource": "bigbang.io"
+}
