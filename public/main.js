@@ -1,199 +1,190 @@
-var game = new Phaser.Game(800, 600, Phaser.AUTO, 'content', { preload: preload, create: create });
+var Robot = function (channel) {
+    this.channel = channel;
+};
 
-//http://opengameart.org/content/onscreen-controls-8-styles
-function preload() {
-    game.load.image('logo', 'img/logo.png');
-    game.load.image('up-dark', 'img/upDark.png');
-    game.load.image('left-dark', 'img/leftDark.png');
-    game.load.image('right-dark', 'img/rightDark.png');
-    game.load.image('down-dark', 'img/downDark.png');
+Robot.prototype.clockwise = function () {
+    sendToBot(this.channel, 'baseCW');
+};
+
+Robot.prototype.counterClockwise = function () {
+    sendToBot(this.channel, 'baseCCW');
 }
 
-var channel;
+Robot.prototype.shoulderUp = function () {
+    sendToBot(this.channel, 'shoulderUp');
+};
 
-var OFFSET = 120;
-
-function create() {
-
-    game.stage.backgroundColor = '#736357';
-    game.add.text(0, 0, 'OWI Robot Control!', {});
-
-
-    game.add.text(510,200, 'Base/Shoulder', {});
-    // CLOCKWISE
-    var keyClockwise = game.input.keyboard.addKey(Phaser.Keyboard.LEFT);
-    keyClockwise.onDown.add(onClockwise, this);
-    keyClockwise.onUp.add(onStop, this);
-
-    var buttonClockwise = game.add.button(500, game.world.centerY, 'left-dark', null, this);
-    buttonClockwise.onInputUp.add(onStop, this);
-    buttonClockwise.onInputDown.add(onClockwise, this);
-
-    //COUNTERCLOCKWISE
-    var keyCCW = game.input.keyboard.addKey(Phaser.Keyboard.RIGHT);
-    keyCCW.onDown.add(onCounterClockwise, this);
-    keyCCW.onUp.add(onStop, this);
-
-    var buttonCCW = game.add.button(500 + OFFSET, game.world.centerY, 'right-dark', null, this);
-    buttonCCW.onInputUp.add(onStop, this);
-    buttonCCW.onInputDown.add(onCounterClockwise, this);
-
-    //SHOULDER UP
-    var keyShoulderUp = game.input.keyboard.addKey(Phaser.Keyboard.UP);
-    keyShoulderUp.onDown.add(onShoulderUp, this);
-    keyShoulderUp.onUp.add(onStop, this);
-
-    var buttonShoulderUp = game.add.button(500 + (OFFSET / 2), game.world.centerY - 60, 'up-dark', null, this);
-    buttonShoulderUp.onInputUp.add(onStop, this);
-    buttonShoulderUp.onInputDown.add(onShoulderUp, this);
-
-    //Shoulder DOWN
-    var keyShoulderDown = game.input.keyboard.addKey(Phaser.Keyboard.DOWN);
-    keyShoulderDown.onDown.add(onShoulderDown, this);
-    keyShoulderDown.onUp.add(onStop, this);
-
-    var buttonShoulderDown = game.add.button(500 + ( OFFSET / 2 ), game.world.centerY + 60, 'down-dark', null, this);
-    buttonShoulderDown.onInputUp.add(onStop, this);
-    buttonShoulderDown.onInputDown.add(onShoulderDown, this);
-
-
-    game.add.text(350,200, 'Elbow', {});
-    //Elbow UP
-    var keyElbowUp = game.input.keyboard.addKey(Phaser.Keyboard.E);
-    keyElbowUp.onDown.add(onElbowUp, this);
-    keyElbowUp.onUp.add(onStop, this);
-
-    var buttonElbowUp = game.add.button(350, game.world.centerY - 50, 'up-dark', null, this);
-    buttonElbowUp.onInputUp.add(onStop, this);
-    buttonElbowUp.onInputDown.add(onElbowUp, this);
-
-    //Elbow DOWN
-    var keyElbowDown = game.input.keyboard.addKey(Phaser.Keyboard.D);
-    keyElbowDown.onDown.add(onElbowDown, this);
-    keyElbowDown.onUp.add(onStop, this);
-
-    var buttonElbowDown = game.add.button(350, game.world.centerY + 50, 'down-dark', null, this);
-    buttonElbowDown.onInputUp.add(onStop, this);
-    buttonElbowDown.onInputDown.add(onElbowDown, this);
-
-    game.add.text(250,200, 'Wrist', {});
-    //Wrist UP
-    var keyWristUp = game.input.keyboard.addKey(Phaser.Keyboard.W);
-    keyWristUp.onDown.add(onWristUp, this);
-    keyWristUp.onUp.add(onStop, this);
-
-    var buttonWristUp = game.add.button(250, game.world.centerY - 50, 'up-dark', null, this);
-    buttonWristUp.onInputUp.add(onStop, this);
-    buttonWristUp.onInputDown.add(onWristUp, this);
-
-    //Wrist DOWN
-    var keyWristDown = game.input.keyboard.addKey(Phaser.Keyboard.S);
-    keyWristDown.onDown.add(onWristDown, this);
-    keyWristDown.onUp.add(onStop, this);
-
-    var buttonWristDown = game.add.button(250, game.world.centerY + 50, 'down-dark', null, this);
-    buttonWristDown.onInputUp.add(onStop, this);
-    buttonWristDown.onInputDown.add(onWristDown, this);
-
-    game.add.text(100,200, 'Grips', {});
-    //Grips OPEN
-    var keyGripsOpen = game.input.keyboard.addKey(Phaser.Keyboard.Q);
-    keyGripsOpen.onDown.add(onGripsOpen, this);
-    keyGripsOpen.onUp.add(onStop, this);
-
-    var buttonGripsOpen = game.add.button(50, game.world.centerY, 'left-dark', null, this);
-    buttonGripsOpen.onInputUp.add(onStop, this);
-    buttonGripsOpen.onInputDown.add(onGripsOpen, this);
-
-    //GRIPS CLOSED
-    var keyGripsClosed = game.input.keyboard.addKey(Phaser.Keyboard.A);
-    keyGripsClosed.onDown.add(onGripsClosed, this);
-    keyGripsClosed.onUp.add(onStop, this);
-
-    var buttonGripsClosed = game.add.button(150, game.world.centerY, 'right-dark', null, this);
-    buttonGripsClosed.onInputUp.add(onStop, this);
-    buttonGripsClosed.onInputDown.add(onGripsClosed, this);
-
-
-    var client = new BigBang.Client();
-    client.connect("http://thegigabots.app.bigbang.io", function (err) {
-        if (err) {
-            console.error(err);
-            return;
-        }
-        else {
-            client.subscribe('owi-arm', function (err, c) {
-                if (err) {
-                    console.error("Unable to subscribe!")
-                }
-                else {
-                    console.log("Subscribed to owi-arm.");
-                    channel = c;
-                }
-            });
-        }
-    });
+Robot.prototype.elbowUp = function () {
+    sendToBot(this.channel, 'elbowUp');
 }
 
-function addPhaserDude() {
-    game.add.sprite(game.world.randomX, game.world.randomY, 'phaser');
+Robot.prototype.elbowDown = function () {
+    sendToBot(this.channel, 'elbowDown');
 }
 
-function addPhaserLogo() {
-    game.add.sprite(game.world.randomX, game.world.randomY, 'logo');
+Robot.prototype.wristUp = function () {
+    sendToBot(this.channel, 'wristUp');
 }
 
-function addPineapple() {
-    game.add.sprite(game.world.randomX, game.world.randomY, 'pineapple');
+Robot.prototype.wristDown = function () {
+    sendToBot(this.channel, 'wristDown');
 }
 
-function onClockwise() {
-    sendCommand('baseCW');
+Robot.prototype.shoulderDown = function () {
+    sendToBot(this.channel, 'shoulderDown');
 }
 
-function onCounterClockwise() {
-    sendCommand('baseCCW');
+Robot.prototype.stop = function () {
+    sendToBot(this.channel, 'stop');
+};
+
+Robot.prototype.gripsOpen = function () {
+    sendToBot(this.channel, 'gripsOpen');
 }
 
-function onShoulderUp() {
-    sendCommand('shoulderUp');
+Robot.prototype.gripsClose = function () {
+    sendToBot(this.channel, 'gripsClose');
 }
 
-function onShoulderDown() {
-    sendCommand('shoulderDown');
-}
-
-function onElbowUp() {
-    sendCommand('elbowUp');
-}
-
-function onElbowDown() {
-    sendCommand('elbowDown');
-}
-
-function onWristUp() {
-    sendCommand('wristUp');
-}
-
-function onWristDown() {
-    sendCommand('wristDown');
-}
-
-function onGripsOpen() {
-    sendCommand('gripsOpen');
-}
-
-function onGripsClosed() {
-    sendCommand('gripsClose');
-}
-
-function onStop() {
-    sendCommand('stop');
-}
-
-function sendCommand(command) {
+function sendToBot(channel, cmd) {
     if (channel) {
-        channel.publish({cmd: command});
-        console.log("published: " + command);
+        channel.publish({cmd: cmd});
+    }
+}
+
+
+BasicGame.Game = function (game) {
+
+    //	When a State is added to Phaser it automatically has the following properties set on it, even if they already exist:
+
+    this.game;		//	a reference to the currently running game
+    this.add;		//	used to add sprites, text, groups, etc
+    this.camera;	//	a reference to the game camera
+    this.cache;		//	the game cache
+    this.input;		//	the global input manager (you can access this.input.keyboard, this.input.mouse, as well from it)
+    this.load;		//	for preloading assets
+    this.math;		//	lots of useful common math operations
+    this.sound;		//	the sound manager - add a sound, play one, set-up markers, etc
+    this.stage;		//	the game stage
+    this.time;		//	the clock
+    this.tweens;	//	the tween manager
+    this.world;		//	the game world
+    this.particles;	//	the particle manager
+    this.physics;	//	the physics manager
+    this.rnd;		//	the repeatable random number generator
+
+    this.channel;
+
+    this.robot = new Robot(this.channel);
+
+    //	You can use any of these from any function within this State.
+    //	But do consider them as being 'reserved words', i.e. don't create a property for your own game called "world" or you'll over-write the world reference.
+
+};
+
+BasicGame.Game.prototype = {
+
+    create: function () {
+        game.stage.backgroundColor = '#FFFFFF';
+
+        GameController.init({
+            left: {
+                type: 'dpad',
+                position: {
+                    left: '15%',
+                    bottom: '30%'
+                },
+
+                dpad: {
+                    up: this.createDpadButton(50, 50, this.robot.shoulderDown, this.robot.stop),
+                    down: this.createDpadButton(50, 50, this.robot.shoulderUp, this.robot.stop),
+                    left: this.createDpadButton(50, 50, this.robot.clockwise, this.robot.stop),
+                    right: this.createDpadButton(50, 50, this.robot.counterClockwise, this.robot.stop)
+                }
+            },
+            right: {
+                type: 'dpad',
+                position: {
+                    left: '40%',
+                    bottom: '30%'
+                },
+
+                dpad: {
+                    up: this.createDpadButton(50, 50, this.robot.elbowDown, this.robot.stop),
+                    down: this.createDpadButton(50, 50, this.robot.elbowUp, this.robot.stop),
+                    left: this.createDpadButton(50, 50, this.robot.wristDown, this.robot.stop),
+                    right: this.createDpadButton(50, 50, this.robot.wristUp, this.robot.stop)
+                }
+            }
+
+        });
+
+
+        GameController.init(
+
+            {
+                left: false,
+                right: {
+                    position: {
+                        left: '22%',
+                        bottom: '60%'
+                    },
+                    type: 'buttons',
+                    buttons: [
+                        this.createNormalButton('open', this.robot.gripsOpen, this.robot.stop),
+                        false,
+                        this.createNormalButton('close', this.robot.gripsClose, this.robot.stop),
+                        false
+                    ]
+
+
+                }
+            }
+        );
+
+        var client = new BigBang.Client();
+        client.connect("http://thegigabots.app.bigbang.io", function (err) {
+            if (err) {
+                console.error(err);
+                return;
+            }
+            else {
+                client.subscribe('owi-arm', function (err, c) {
+                    if (err) {
+                        console.error("Unable to subscribe!")
+                    }
+                    else {
+                        console.log("Subscribed to owi-arm.");
+                        this.channel = c;
+
+                    }
+                });
+            }
+        });
+
+    },
+    createDpadButton: function (w, h, beginCallback, endCallback) {
+        return {
+            width: w,
+            height: h,
+            touchStart: function () {
+                beginCallback();
+            },
+            touchEnd: function () {
+                endCallback();
+            }
+        }
+    },
+    createNormalButton: function (label, begin, end) {
+        return {
+            label: label,
+            fontSize: 13,
+            touchStart: function () {
+                begin();
+            },
+            touchEnd: function () {
+                end();
+            }
+        }
     }
 }
